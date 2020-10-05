@@ -22,7 +22,25 @@ class ProductController extends Controller
     	$cart->add($product,$product->id);
 
     	$r->session()->put('cart',$cart);
-    	dd($r->session()->get('cart'));
     	return redirect('/');
+    }
+    public function cart()
+    {
+    	if (!Session::has('cart')) {
+    		return view('shop.cart');
+    	}
+    	$oldCart = Session::get('cart');
+    	$cart = new Cart($oldCart);
+    	return view('shop.cart', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+    }
+    public function checkout()
+    {
+    	if (!Session::has('cart')) {
+    		return view('shop.cart');
+    	}
+    	$oldCart = Session::get('cart');
+    	$cart = new Cart($oldCart);
+    	$total = $cart->totalPrice;
+    	return view('shop.checkout', ['total' => $total]);
     }
 }

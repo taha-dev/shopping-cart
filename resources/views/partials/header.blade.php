@@ -6,7 +6,8 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i> Shopping Cart</a></a>
+        <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i> Shopping Cart 
+          <span class="badge badge-info">{{Session::has('cart') ? Session::get('cart')->totalQty : ''}}</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/">Shop</a></a>
