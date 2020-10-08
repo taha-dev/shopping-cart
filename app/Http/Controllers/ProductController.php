@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Cart;
 use App\Product;
 use Session;
+use App\Order;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -23,6 +25,35 @@ class ProductController extends Controller
 
     	$r->session()->put('cart',$cart);
     	return redirect('/');
+    }
+    public function getreducebyone($id)
+    {
+    	$oldCart = Session::has('cart')? Session::get('cart'): null;
+    	$cart = new Cart($oldCart);
+    	$cart->reducebyone($id);
+
+    	if (count($cart->items) > 0) {
+    		Session::put('cart', $cart);
+    	}
+    	else
+    	{
+    		Session::forget('cart');
+    	}
+    	return redirect('/cart');
+    }
+    public function getremoveitem($id)
+    {
+    	$oldCart = Session::has('cart')? Session::get('cart'): null;
+    	$cart = new Cart($oldCart);
+    	$cart->removeitem($id);
+    	if (count($cart->items) > 0) {
+    		Session::put('cart', $cart);
+    	}
+    	else
+    	{
+    		Session::forget('cart');
+    	}
+    	return redirect('/cart');
     }
     public function cart()
     {
@@ -42,5 +73,24 @@ class ProductController extends Controller
     	$cart = new Cart($oldCart);
     	$total = $cart->totalPrice;
     	return view('shop.checkout', ['total' => $total]);
+    }
+    public function postcheckout(Request $r)
+    {
+    	if (!Session::has('cart')) 
+    	{
+    		return redirect('cart');
+    	}
+    	$oldCart = Session::get('cart');
+    	$cart = new Cart($oldCart);
+    	$order = new Order();
+    	$order->user_id = Auth::user()->id;
+    	$order->cart = serialize($cart);
+    	$order->address = $r->input('address');
+    	$order->name = $r->input('name');
+    	$order->bill = $cart->totalPrice;
+    	$order->save();
+    	Session::forget('cart');
+    	$r->session()->flash('status', 'Order placed successfully');
+    	return redirect('/');
     }
 }

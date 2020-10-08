@@ -10,18 +10,15 @@ Lravel Shopping cart
 	<div class="col-sm-12 col-md-4">
 		<h1>Checkout</h1>
 		<h4>Your Total: ${{ $total }}</h4>
-		<div class="charge-error" class="alert alert-danger alert-dismissable {{ !Session::has('error') ? 'hidden' : ''}}">
-			{{ Session::get('error')}}
-		</div>
 		<form action="/checkout" method="post" id="checkout-form">
 			@csrf
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" placeholder="Enter name" required="required">
+    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" required="required">
   </div>
   <div class="form-group">
     <label for="address">Address</label>
-    <input type="text" class="form-control" id="address" placeholder="Address" required="required">
+    <input type="text" class="form-control" name="address" id="address" placeholder="Address" required="required">
   </div>
   <div class="form-group">
     <label for="card-name">Card Holder Name</label>
@@ -47,8 +44,4 @@ Lravel Shopping cart
 		</form>
 	</div>
 </div>
-@endsection
-@section('scripts')
-<script src="https://js.stripe.com/v3/"></script>
-<script src="{{ URL::to('src/js/checkout.js') }}"></script>
 @endsection

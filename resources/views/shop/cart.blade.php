@@ -13,9 +13,14 @@ Lravel Shopping cart
   	@foreach($products as $product)
     <li class="list-group-item">
     	<strong>{{ $product['item']['title']}}</strong>
-    	<span class="label label-success">{{ $product['price'] }}</span>
-    	<button><a href="#">-</a></button>
-    	<button> <a href="#">+</a></button>
+    	<span class="badge badge-success">{{ $product['price'] }}</span>
+  <button class="btn btn-secondary btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="reduce/{{ $product['item']['id'] }}">Reduce by 1</a>
+    <a class="dropdown-item" href="remove/{{ $product['item']['id'] }}">Reduce All</a>
+  </div>
     	<span class="badge badge-info">{{ $product['qty']}}</span>
     </li>
     @endforeach

@@ -5,7 +5,18 @@ Lravel Shopping cart
 @endsection
 
 @section('content')
-
+@if(Session::get('status'))
+<div class="row">
+  <div class="col-sm-6 col-md-4">
+    <div class="alert alert-success alert-dismissible fade show">
+      {{ Session::get('status') }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+    </div>
+  </div>
+</div>
+@endif
 @foreach($products->Chunk(4) as $productchunk)
 
 <div class="row">
